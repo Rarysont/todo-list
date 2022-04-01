@@ -1,11 +1,14 @@
 import { ChakraProvider } from '@chakra-ui/react';
 
+import { TodoProvider } from './hooks/todo';
 import Routes from './Routes';
 
 function App() {
   return (
     <ChakraProvider>
-      <Routes />
+      <TodoProvider>
+        <Routes />
+      </TodoProvider>
     </ChakraProvider>
   );
 }
