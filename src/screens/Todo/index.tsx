@@ -2,10 +2,11 @@ import { Box, Center, Container, Flex, Input, InputGroup, Stack, Text } from '@c
 import { useEffect } from 'react';
 
 import { CardsTodo } from '../../Components/CardsTodo';
+import { Loading } from '../../Components/Loading';
 import { useTodo } from '../../hooks/todo';
 
 function Todo() {
-  const { getTodo, todo } = useTodo();
+  const { getTodo, todo, loading } = useTodo();
 
   useEffect(() => {
     (async () => {
@@ -41,9 +42,7 @@ function Todo() {
             </Stack>
           </Center>
           <Box w="100%" marginTop="10" marginBottom="10">
-            {todo.map((to) => (
-              <CardsTodo id={to.id} title={to.title} />
-            ))}
+            {todo.length > 0 && !loading ? todo.map((to) => <CardsTodo id={to.id} title={to.title} />) : <Loading />}
           </Box>
         </Flex>
       </Container>
