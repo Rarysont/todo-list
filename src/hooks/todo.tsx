@@ -7,6 +7,7 @@ import { getAllTodo } from '../service/todo';
 interface TodoContextData {
   getTodo(): Promise<void>;
   todo: Array<ITodo>;
+  loading: boolean;
 }
 
 interface Props {
@@ -17,10 +18,18 @@ const TodoContext = createContext<TodoContextData>({} as TodoContextData);
 
 export function TodoProvider({ children }: Props): ReactElement {
   const [todo, setTodo] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   async function getTodo() {
-    const { data } = await getAllTodo();
-    setTodo(data);
+    try {
+      setLoading(true);
+      const { data } = await getAllTodo();
+      setTodo(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -28,6 +37,7 @@ export function TodoProvider({ children }: Props): ReactElement {
       value={{
         getTodo,
         todo,
+        loading,
       }}
     >
       {children}
