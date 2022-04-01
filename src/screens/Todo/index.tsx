@@ -14,11 +14,21 @@ function Todo() {
   }, []);
 
   return (
-    <Container bg="#7D53DE" minH="100vh" p={4}>
-      <Container bg="whitesmoke" borderRadius="10px">
+    <Container
+      display="flex"
+      justifyContent="start"
+      flexDirection="column"
+      w="520px"
+      minH="600px"
+      margin="128px auto"
+      borderRadius="10px"
+      borderWidth="1px"
+      borderColor="#4d5499"
+    >
+      <Container w="100%" borderRadius="10px" marginTop="10">
         <Flex flexDirection="column">
-          <Center>
-            <Text fontWeight="bold" fontSize="24" color="blackAlpha.800">
+          <Center marginBottom="5">
+            <Text fontWeight="bold" fontSize="24">
               Todo List
             </Text>
           </Center>
@@ -26,13 +36,13 @@ function Todo() {
           <Center>
             <Stack w="75%">
               <InputGroup>
-                <Input variant="outline" type="text" placeholder="Digite aqui o seu Todo" />
+                <Input variant="filled" type="text" placeholder="Digite aqui o seu Todo" />
               </InputGroup>
             </Stack>
           </Center>
-          <Box marginTop="10" marginBottom="10">
+          <Box w="100%" marginTop="10" marginBottom="10">
             {todo.map((to) => (
-              <Box key={to.id} bg="blue.300" borderRadius="10px" marginBottom="5">
+              <Box key={to.id} borderRadius="10px" borderWidth="1px" borderColor="#4d5499" marginBottom="5">
                 <Flex justifyContent="space-between">
                   <Center marginLeft="5px">
                     <Text fontWeight="bold" fontSize="16" color="white">
