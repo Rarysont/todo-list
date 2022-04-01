@@ -6,7 +6,9 @@ interface Props {
   title: string;
 }
 
-export function CardsTodo({ id, title }: Props) {
+export function CardsTodo(props: Props) {
+  const { id, title } = props;
+
   return (
     <Box key={id} borderRadius="10px" borderWidth="1px" borderColor="#4d5499" marginBottom="5">
       <Flex justifyContent="space-between">
