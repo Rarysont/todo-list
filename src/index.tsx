@@ -17,6 +17,7 @@ const colors = {
     900: '#080819',
   },
 };
+
 const config = {
   initialColorMode: 'dark',
   useSystemColorMode: false,
