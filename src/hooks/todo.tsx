@@ -1,11 +1,13 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { createContext, ReactElement, useContext, useState } from 'react';
+import { createContext, ReactElement, useContext, useState } from 'react';
 
+import { IFormTodo } from '../@types/FormTodo';
 import { ITodo } from '../@types/Todo';
-import { getAllTodo } from '../service/todo';
+import { addNewTodo, getAllTodo } from '../service/todo';
 
 interface TodoContextData {
   getTodo(): Promise<void>;
+  addTodo: any;
   todo: Array<ITodo>;
   loading: boolean;
 }
@@ -32,12 +34,25 @@ export function TodoProvider({ children }: Props): ReactElement {
     }
   }
 
+  async function addTodo(params: IFormTodo) {
+    try {
+      // setLoading(true);
+      const { data } = await addNewTodo(params);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      // setLoading(false);
+    }
+  }
+
   return (
     <TodoContext.Provider
       value={{
         getTodo,
         todo,
         loading,
+        addTodo,
       }}
     >
       {children}

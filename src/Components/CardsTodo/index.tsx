@@ -1,16 +1,22 @@
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, Center, Flex, IconButton, Text } from '@chakra-ui/react';
+import { Box, Center, Container, Flex, IconButton, Text } from '@chakra-ui/react';
+
+import { Loading } from '../Loading';
 
 interface Props {
   id: number;
   title: string;
+  loading: boolean;
 }
 
 export function CardsTodo(props: Props) {
-  const { id, title } = props;
+  const { id, title, loading } = props;
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
-    <Box key={id} borderRadius="10px" borderWidth="1px" borderColor="#4d5499" marginBottom="5">
+    <Container key={id} borderRadius="10px" borderWidth="1px" borderColor="#4d5499" marginBottom="5">
       <Flex justifyContent="space-between">
         <Center marginLeft="5px">
           <Text fontWeight="bold" fontSize="16" color="white">
@@ -27,6 +33,6 @@ export function CardsTodo(props: Props) {
           </IconButton>
         </Box>
       </Flex>
-    </Box>
+    </Container>
   );
 }

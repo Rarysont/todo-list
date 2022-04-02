@@ -1,21 +1,21 @@
-import { Box, Center, Container, Flex, Stack, useToast } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
 import { IFormTodo } from '../../@types/FormTodo';
 import { CardsTodo } from '../../Components/CardsTodo';
 import { Form } from '../../Components/Form';
-import { Loading } from '../../Components/Loading';
 import { useTodo } from '../../hooks/todo';
 
 function Todo() {
-  const { getTodo, todo, loading } = useTodo();
+  const [sucessAddTodo, setSuccessAddTodo] = useState(false);
+  const { getTodo, todo, loading, addTodo } = useTodo();
 
   useEffect(() => {
     (async () => {
       await getTodo();
     })();
-  }, []);
+  }, [sucessAddTodo]);
 
   const toast = useToast();
 
@@ -37,12 +37,20 @@ function Todo() {
     });
   };
 
-  const onSubmit: SubmitHandler<IFormTodo> = (form) => {
+  const onSubmit: SubmitHandler<IFormTodo> = async (form) => {
     if (form.title === '' || form.title.length <= 6) {
       const description = form.title === '' ? 'Digite um valor para prosseguir' : 'Mínimo de caracteres: 6';
       customToast({ title: 'Campo obrigatório', description, status: 'error' });
     } else {
-      customToast({ title: 'Tarefa criada com sucesso', description: 'Parabéns', status: 'success' });
+      try {
+        await addTodo(form);
+        setSuccessAddTodo(true);
+        customToast({ title: 'Tarefa criada com sucesso', description: 'Parabéns', status: 'success' });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setSuccessAddTodo(false);
+      }
     }
   };
 
@@ -65,9 +73,13 @@ function Todo() {
               <Form onSubmit={onSubmit} />
             </Stack>
           </Center>
-          <Box w="100%" marginTop="10" marginBottom="10">
-            {todo.length > 0 && !loading ? todo.map((to) => <CardsTodo id={to.id} title={to.title} />) : <Loading />}
-          </Box>
+          <Container w="100%" marginTop="10" marginBottom="10" centerContent>
+            {todo.length ? (
+              todo.map((to) => <CardsTodo id={to.id} title={to.title} loading={loading} />)
+            ) : (
+              <Text>Não há Todo</Text>
+            )}
+          </Container>
         </Flex>
       </Container>
     </Container>
