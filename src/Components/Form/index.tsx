@@ -1,7 +1,7 @@
 import { Button, Container, FormControl, Input, useToast } from '@chakra-ui/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-interface IFormTodo extends FormData {
+interface IFormTodo {
   title: string;
 }
 
