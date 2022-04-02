@@ -1,6 +1,8 @@
-import { Box, Center, Container, Flex, Stack } from '@chakra-ui/react';
+import { Box, Center, Container, Flex, Stack, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
+import { SubmitHandler } from 'react-hook-form';
 
+import { IFormTodo } from '../../@types/FormTodo';
 import { CardsTodo } from '../../Components/CardsTodo';
 import { Form } from '../../Components/Form';
 import { Loading } from '../../Components/Loading';
@@ -14,6 +16,35 @@ function Todo() {
       await getTodo();
     })();
   }, []);
+
+  const toast = useToast();
+
+  const customToast = ({
+    title,
+    description,
+    status,
+  }: {
+    title: string;
+    description: string;
+    status: 'info' | 'warning' | 'success' | 'error' | undefined;
+  }) => {
+    return toast({
+      duration: 3000,
+      position: 'top-right',
+      title,
+      description,
+      status,
+    });
+  };
+
+  const onSubmit: SubmitHandler<IFormTodo> = (form) => {
+    if (form.title === '' || form.title.length <= 6) {
+      const description = form.title === '' ? 'Digite um valor para prosseguir' : 'Mínimo de caracteres: 6';
+      customToast({ title: 'Campo obrigatório', description, status: 'error' });
+    } else {
+      customToast({ title: 'Tarefa criada com sucesso', description: 'Parabéns', status: 'success' });
+    }
+  };
 
   return (
     <Container
@@ -31,7 +62,7 @@ function Todo() {
         <Flex flexDirection="column">
           <Center>
             <Stack w="75%">
-              <Form />
+              <Form onSubmit={onSubmit} />
             </Stack>
           </Center>
           <Box w="100%" marginTop="10" marginBottom="10">
