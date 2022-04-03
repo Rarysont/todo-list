@@ -1,4 +1,5 @@
-import { Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { Button, Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
@@ -12,6 +13,10 @@ function Todo() {
   const [sucessAddTodo, setSuccessAddTodo] = useState(false);
   const [deleteTodo, setDeleteTodo] = useState(false);
   const { getTodo, todo, loading, addTodo, removeTodo } = useTodo();
+
+  const [show, setShow] = useState(false);
+
+  const handleToggle = () => setShow(!show);
 
   useEffect(() => {
     (async () => {
@@ -92,10 +97,25 @@ function Todo() {
               <Form onSubmit={onSubmit} />
             </Stack>
           </Center>
-          <Container w="100%" marginTop="10" marginBottom="10" centerContent>
+          <Container marginTop="10" marginBottom="10">
+            <Container marginBottom="2" marginLeft="-30">
+              <Button
+                onClick={handleToggle}
+                variant="link"
+                fontSize="16"
+                rightIcon={
+                  show ? <ChevronDownIcon width="30px" height="30px" /> : <ChevronUpIcon width="30px" height="30px" />
+                }
+              >
+                Tarefas a realizar
+              </Button>
+            </Container>
+
             {todo.length ? (
-              // eslint-disable-next-line react/jsx-no-bind
-              todo.map((to) => <CardsTodo id={to.id} title={to.title} loading={loading} onRemove={onRemoveTodo} />)
+              todo.map((to) => (
+                // eslint-disable-next-line react/jsx-no-bind
+                <CardsTodo id={to.id} title={to.title} loading={loading} onRemove={onRemoveTodo} isOpen={show} />
+              ))
             ) : (
               <Text>Não há Todo</Text>
             )}
