@@ -1,13 +1,8 @@
 {
   "task": [
     {
-      "title": "Ir ao supermercado",
-      "id": 1,
-      "done": false
-    },
-    {
+      "done": true,
       "title": "Jogar Valorant com o Rennan",
-      "done": false,
       "id": 2
     },
     {
@@ -16,8 +11,8 @@
       "id": 3
     },
     {
+      "done": true,
       "title": "Terminar o todo",
-      "done": false,
       "id": 4
     }
   ]

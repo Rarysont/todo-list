@@ -3,7 +3,7 @@ import { createContext, ReactElement, useContext, useState } from 'react';
 
 import { IFormTodo } from '../@types/FormTodo';
 import { IdentificationTodo, ITodo } from '../@types/Todo';
-import { addNewTodo, deleteTodo, getAllTodo } from '../service/todo';
+import { addNewTodo, deleteTodo, getAllTodo, updateTodoDone } from '../service/todo';
 
 interface TodoContextData {
   getTodo(): Promise<void>;
@@ -12,6 +12,7 @@ interface TodoContextData {
   addTodo(params: IFormTodo): void;
   loading: boolean;
   removeTodo(params: IdentificationTodo): Promise<void>;
+  updateTodo(params: IdentificationTodo): Promise<void>;
 }
 
 interface Props {
@@ -56,6 +57,14 @@ export function TodoProvider({ children }: Props): ReactElement {
     }
   }
 
+  async function updateTodo(params: IdentificationTodo) {
+    try {
+      await updateTodoDone(params);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <TodoContext.Provider
       value={{
@@ -65,6 +74,7 @@ export function TodoProvider({ children }: Props): ReactElement {
         loading,
         addTodo,
         removeTodo,
+        updateTodo,
       }}
     >
       {children}

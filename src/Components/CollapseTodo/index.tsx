@@ -11,10 +11,12 @@ interface Props {
   onRemoveTodo(params: IdentificationTodo): Promise<void>;
   loading: boolean;
   done: boolean;
+  // eslint-disable-next-line react/require-default-props
+  onUpdateTodoDone?(params: IdentificationTodo): Promise<void>;
 }
 
 function CollapseTodo(props: Props) {
-  const { onClick, showTodo, todo, onRemoveTodo, loading, done } = props;
+  const { onClick, showTodo, todo, onRemoveTodo, loading, done, onUpdateTodoDone } = props;
   return (
     <Container>
       <Container marginBottom="2" marginLeft="-30">
@@ -31,7 +33,15 @@ function CollapseTodo(props: Props) {
       </Container>
       {todo.length ? (
         todo.map((to) => (
-          <CardsTodo id={to.id} title={to.title} loading={loading} onRemove={onRemoveTodo} isOpen={showTodo} />
+          <CardsTodo
+            id={to.id}
+            title={to.title}
+            loading={loading}
+            onRemove={onRemoveTodo}
+            isOpen={showTodo}
+            done={done}
+            onUpdateTodoDone={onUpdateTodoDone}
+          />
         ))
       ) : (
         <Text>Não há Todo</Text>

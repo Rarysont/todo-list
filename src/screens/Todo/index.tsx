@@ -9,12 +9,12 @@ import { Form } from '../../Components/Form';
 import { useTodo } from '../../hooks/todo';
 
 function Todo() {
+  const { getTodo, todoDone, todoNotDone, loading, addTodo, removeTodo, updateTodo } = useTodo();
+
   const [sucessAddTodo, setSuccessAddTodo] = useState(false);
   const [deleteTodo, setDeleteTodo] = useState(false);
-  const { getTodo, todoDone, todoNotDone, loading, addTodo, removeTodo } = useTodo();
-
+  const [updateTodoDone, setUpdateTodoDone] = useState(false);
   const [showTodoDone, setShowTodoDone] = useState(false);
-
   const [showTodoNotDone, setShowTodoNotDone] = useState(false);
 
   const handleToggleTodoDone = () => setShowTodoDone(!showTodoDone);
@@ -24,7 +24,7 @@ function Todo() {
     (async () => {
       await getTodo();
     })();
-  }, [sucessAddTodo, deleteTodo]);
+  }, [sucessAddTodo, deleteTodo, updateTodoDone]);
 
   const toast = useToast();
 
@@ -78,6 +78,17 @@ function Todo() {
     }
   }
 
+  async function handleUpdateTodoDone(params: IdentificationTodo) {
+    try {
+      await updateTodo(params);
+      setUpdateTodoDone(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setUpdateTodoDone(false);
+    }
+  }
+
   return (
     <Container
       display="flex"
@@ -121,6 +132,8 @@ function Todo() {
               onRemoveTodo={onRemoveTodo}
               loading={loading}
               done={false}
+              // eslint-disable-next-line react/jsx-no-bind
+              onUpdateTodoDone={handleUpdateTodoDone}
             />
           </Container>
         </Flex>

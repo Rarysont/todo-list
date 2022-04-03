@@ -7,3 +7,6 @@ export const getAllTodo = () => api.get('task').then((res) => res);
 export const addNewTodo = (data: IFormTodo) => api.post('task', data).then((res) => res);
 
 export const deleteTodo = (params: IdentificationTodo) => api.delete(`task/${params.id}`).then((res) => res);
+
+export const updateTodoDone = (params: IdentificationTodo) =>
+  api.put(`task/${params.id}`, { done: true, title: params.title }).then((res) => res);

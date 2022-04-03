@@ -10,17 +10,20 @@ interface Props {
   loading: boolean;
   onRemove(params: IdentificationTodo): Promise<void>;
   isOpen: boolean;
+  done: boolean;
+  // eslint-disable-next-line react/require-default-props
+  onUpdateTodoDone?(params: IdentificationTodo): Promise<void>;
 }
 
 export function CardsTodo(props: Props) {
-  const { id, title, loading, onRemove, isOpen } = props;
+  const { id, title, loading, onRemove, isOpen, done, onUpdateTodoDone } = props;
 
   if (loading) {
     return <Loading />;
   }
   return (
     <Collapse key={id} in={isOpen} style={{ width: '100%' }}>
-      <Container key={id} borderRadius="10px" borderWidth="1px" borderColor="#4d5499" marginBottom="5">
+      <Container borderRadius="10px" borderWidth="1px" borderColor="#4d5499" marginBottom="5">
         <Flex justifyContent="space-between">
           <Center marginLeft="5px">
             <Text fontWeight="bold" fontSize="16" color="white">
@@ -29,7 +32,14 @@ export function CardsTodo(props: Props) {
           </Center>
 
           <Box>
-            <IconButton variant="ghost" aria-label="teste" icon={<CheckCircleIcon />} />
+            {!done && onUpdateTodoDone && (
+              <IconButton
+                variant="ghost"
+                aria-label="teste"
+                icon={<CheckCircleIcon />}
+                onClick={() => onUpdateTodoDone({ id: String(id), title })}
+              />
+            )}
 
             <IconButton variant="ghost" aria-label="teste" icon={<EditIcon />}>
               Edit
