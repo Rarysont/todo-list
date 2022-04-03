@@ -1,11 +1,10 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import { Button, Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+import { Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
 import { IFormTodo } from '../../@types/FormTodo';
 import { IdentificationTodo } from '../../@types/Todo';
-import { CardsTodo } from '../../Components/CardsTodo';
+import CollapseTodo from '../../Components/CollapseTodo';
 import { Form } from '../../Components/Form';
 import { useTodo } from '../../hooks/todo';
 
@@ -53,7 +52,11 @@ function Todo() {
       customToast({ title: 'Campo obrigatório', description, status: 'error' });
     } else {
       try {
-        await addTodo(form);
+        const payload = {
+          title: form.title,
+          done: false,
+        };
+        await addTodo(payload);
         setSuccessAddTodo(true);
         customToast({ title: 'Tarefa criada com sucesso', description: 'Parabéns', status: 'success' });
       } catch (error) {
@@ -101,67 +104,24 @@ function Todo() {
             </Stack>
           </Center>
           <Container marginTop="10" marginBottom="10">
-            <Container marginBottom="2" marginLeft="-30">
-              <Button
-                onClick={handleToggleTodoDone}
-                variant="link"
-                fontSize="16"
-                rightIcon={
-                  showTodoDone ? (
-                    <ChevronDownIcon width="30px" height="30px" />
-                  ) : (
-                    <ChevronUpIcon width="30px" height="30px" />
-                  )
-                }
-              >
-                Tarefas realizadas
-              </Button>
-            </Container>
-
-            {todoDone.length ? (
-              todoDone.map((to) => (
-                <CardsTodo
-                  id={to.id}
-                  title={to.title}
-                  loading={loading}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onRemove={onRemoveTodo}
-                  isOpen={showTodoDone}
-                />
-              ))
-            ) : (
-              <Text>Não há Todo</Text>
-            )}
-            <Container marginBottom="2" marginLeft="-30">
-              <Button
-                onClick={handleToggleTodoNotDone}
-                variant="link"
-                fontSize="16"
-                rightIcon={
-                  showTodoNotDone ? (
-                    <ChevronDownIcon width="30px" height="30px" />
-                  ) : (
-                    <ChevronUpIcon width="30px" height="30px" />
-                  )
-                }
-              >
-                Tarefas a realizar
-              </Button>
-            </Container>
-            {todoNotDone.length ? (
-              todoNotDone.map((to) => (
-                <CardsTodo
-                  id={to.id}
-                  title={to.title}
-                  loading={loading}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onRemove={onRemoveTodo}
-                  isOpen={showTodoNotDone}
-                />
-              ))
-            ) : (
-              <Text>Não há Todo</Text>
-            )}
+            <CollapseTodo
+              onClick={handleToggleTodoDone}
+              showTodo={showTodoDone}
+              todo={todoDone}
+              // eslint-disable-next-line react/jsx-no-bind
+              onRemoveTodo={onRemoveTodo}
+              loading={loading}
+              done
+            />
+            <CollapseTodo
+              onClick={handleToggleTodoNotDone}
+              showTodo={showTodoNotDone}
+              todo={todoNotDone}
+              // eslint-disable-next-line react/jsx-no-bind
+              onRemoveTodo={onRemoveTodo}
+              loading={loading}
+              done={false}
+            />
           </Container>
         </Flex>
       </Container>

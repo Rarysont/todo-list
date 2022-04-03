@@ -1,4 +1,4 @@
-import { CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Center, Collapse, Container, Flex, IconButton, Text } from '@chakra-ui/react';
 
 import { IdentificationTodo } from '../../@types/Todo';
@@ -29,13 +29,15 @@ export function CardsTodo(props: Props) {
           </Center>
 
           <Box>
-            <IconButton variant="ghost" aria-label="teste" icon={<EditIcon color="white" />}>
+            <IconButton variant="ghost" aria-label="teste" icon={<CheckCircleIcon />} />
+
+            <IconButton variant="ghost" aria-label="teste" icon={<EditIcon />}>
               Edit
             </IconButton>
             <IconButton
               variant="ghost"
               aria-label="Search database"
-              icon={<CloseIcon color="white" />}
+              icon={<CloseIcon />}
               onClick={() => onRemove({ id: String(id) })}
             >
               Delete
