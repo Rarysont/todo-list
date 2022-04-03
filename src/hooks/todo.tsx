@@ -7,7 +7,8 @@ import { addNewTodo, deleteTodo, getAllTodo } from '../service/todo';
 
 interface TodoContextData {
   getTodo(): Promise<void>;
-  todo: Array<ITodo>;
+  todoDone: ITodo[];
+  todoNotDone: ITodo[];
   addTodo(params: IFormTodo): void;
   loading: boolean;
   removeTodo(params: IdentificationTodo): Promise<void>;
@@ -20,14 +21,18 @@ interface Props {
 const TodoContext = createContext<TodoContextData>({} as TodoContextData);
 
 export function TodoProvider({ children }: Props): ReactElement {
-  const [todo, setTodo] = useState([]);
+  const [todoDone, setTodoDone] = useState([]);
+  const [todoNotDone, setTodoNotDone] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function getTodo() {
     try {
       setLoading(true);
       const { data } = await getAllTodo();
-      setTodo(data);
+      const filterTodoDone = data.filter((todo: ITodo) => todo.done === true);
+      const filterTodoNotDone = data.filter((todo: ITodo) => todo.done === false);
+      setTodoDone(filterTodoDone);
+      setTodoNotDone(filterTodoNotDone);
     } catch (error) {
       console.error(error);
     } finally {
@@ -55,7 +60,8 @@ export function TodoProvider({ children }: Props): ReactElement {
     <TodoContext.Provider
       value={{
         getTodo,
-        todo,
+        todoDone,
+        todoNotDone,
         loading,
         addTodo,
         removeTodo,

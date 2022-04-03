@@ -12,11 +12,14 @@ import { useTodo } from '../../hooks/todo';
 function Todo() {
   const [sucessAddTodo, setSuccessAddTodo] = useState(false);
   const [deleteTodo, setDeleteTodo] = useState(false);
-  const { getTodo, todo, loading, addTodo, removeTodo } = useTodo();
+  const { getTodo, todoDone, todoNotDone, loading, addTodo, removeTodo } = useTodo();
 
-  const [show, setShow] = useState(false);
+  const [showTodoDone, setShowTodoDone] = useState(false);
 
-  const handleToggle = () => setShow(!show);
+  const [showTodoNotDone, setShowTodoNotDone] = useState(false);
+
+  const handleToggleTodoDone = () => setShowTodoDone(!showTodoDone);
+  const handleToggleTodoNotDone = () => setShowTodoNotDone(!showTodoNotDone);
 
   useEffect(() => {
     (async () => {
@@ -100,21 +103,61 @@ function Todo() {
           <Container marginTop="10" marginBottom="10">
             <Container marginBottom="2" marginLeft="-30">
               <Button
-                onClick={handleToggle}
+                onClick={handleToggleTodoDone}
                 variant="link"
                 fontSize="16"
                 rightIcon={
-                  show ? <ChevronDownIcon width="30px" height="30px" /> : <ChevronUpIcon width="30px" height="30px" />
+                  showTodoDone ? (
+                    <ChevronDownIcon width="30px" height="30px" />
+                  ) : (
+                    <ChevronUpIcon width="30px" height="30px" />
+                  )
+                }
+              >
+                Tarefas realizadas
+              </Button>
+            </Container>
+
+            {todoDone.length ? (
+              todoDone.map((to) => (
+                <CardsTodo
+                  id={to.id}
+                  title={to.title}
+                  loading={loading}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onRemove={onRemoveTodo}
+                  isOpen={showTodoDone}
+                />
+              ))
+            ) : (
+              <Text>Não há Todo</Text>
+            )}
+            <Container marginBottom="2" marginLeft="-30">
+              <Button
+                onClick={handleToggleTodoNotDone}
+                variant="link"
+                fontSize="16"
+                rightIcon={
+                  showTodoNotDone ? (
+                    <ChevronDownIcon width="30px" height="30px" />
+                  ) : (
+                    <ChevronUpIcon width="30px" height="30px" />
+                  )
                 }
               >
                 Tarefas a realizar
               </Button>
             </Container>
-
-            {todo.length ? (
-              todo.map((to) => (
-                // eslint-disable-next-line react/jsx-no-bind
-                <CardsTodo id={to.id} title={to.title} loading={loading} onRemove={onRemoveTodo} isOpen={show} />
+            {todoNotDone.length ? (
+              todoNotDone.map((to) => (
+                <CardsTodo
+                  id={to.id}
+                  title={to.title}
+                  loading={loading}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onRemove={onRemoveTodo}
+                  isOpen={showTodoNotDone}
+                />
               ))
             ) : (
               <Text>Não há Todo</Text>
