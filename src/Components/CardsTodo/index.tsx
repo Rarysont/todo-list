@@ -1,6 +1,5 @@
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Center, Container, Flex, IconButton, Text } from '@chakra-ui/react';
-import { MouseEventHandler } from 'react';
 
 import { IdentificationTodo } from '../../@types/Todo';
 import { Loading } from '../Loading';

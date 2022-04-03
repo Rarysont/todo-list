@@ -1,5 +1,5 @@
 import { Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
 import { IFormTodo } from '../../@types/FormTodo';
@@ -10,13 +10,14 @@ import { useTodo } from '../../hooks/todo';
 
 function Todo() {
   const [sucessAddTodo, setSuccessAddTodo] = useState(false);
+  const [deleteTodo, setDeleteTodo] = useState(false);
   const { getTodo, todo, loading, addTodo, removeTodo } = useTodo();
 
   useEffect(() => {
     (async () => {
       await getTodo();
     })();
-  }, [sucessAddTodo]);
+  }, [sucessAddTodo, deleteTodo]);
 
   const toast = useToast();
 
@@ -58,8 +59,11 @@ function Todo() {
   async function onRemoveTodo(params: IdentificationTodo) {
     try {
       await removeTodo(params);
+      setDeleteTodo(true);
     } catch (error) {
       console.error(error);
+    } finally {
+      setDeleteTodo(false);
     }
   }
 
@@ -77,6 +81,12 @@ function Todo() {
     >
       <Container w="100%" borderRadius="10px" marginTop="10">
         <Flex flexDirection="column">
+          <Center marginBottom="5">
+            <Text fontSize="20" fontWeight="bold">
+              Todo List
+            </Text>
+          </Center>
+
           <Center>
             <Stack w="75%">
               <Form onSubmit={onSubmit} />

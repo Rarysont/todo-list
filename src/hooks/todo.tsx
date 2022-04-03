@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import { createContext, MouseEventHandler, ReactElement, useContext, useState } from 'react';
+import { createContext, ReactElement, useContext, useState } from 'react';
 
 import { IFormTodo } from '../@types/FormTodo';
 import { IdentificationTodo, ITodo } from '../@types/Todo';
