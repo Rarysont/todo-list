@@ -1,16 +1,19 @@
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Box, Center, Container, Flex, IconButton, Text } from '@chakra-ui/react';
+import { MouseEventHandler } from 'react';
 
+import { IdentificationTodo } from '../../@types/Todo';
 import { Loading } from '../Loading';
 
 interface Props {
   id: number;
   title: string;
   loading: boolean;
+  onRemove(params: IdentificationTodo): Promise<void>;
 }
 
 export function CardsTodo(props: Props) {
-  const { id, title, loading } = props;
+  const { id, title, loading, onRemove } = props;
 
   if (loading) {
     return <Loading />;
@@ -28,7 +31,12 @@ export function CardsTodo(props: Props) {
           <IconButton variant="ghost" aria-label="teste" icon={<EditIcon color="white" />}>
             Edit
           </IconButton>
-          <IconButton variant="ghost" aria-label="Search database" icon={<CloseIcon color="white" />}>
+          <IconButton
+            variant="ghost"
+            aria-label="Search database"
+            icon={<CloseIcon color="white" />}
+            onClick={() => onRemove({ id: String(id) })}
+          >
             Delete
           </IconButton>
         </Box>

@@ -1,15 +1,16 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import { createContext, ReactElement, useContext, useState } from 'react';
+import { createContext, MouseEventHandler, ReactElement, useContext, useState } from 'react';
 
 import { IFormTodo } from '../@types/FormTodo';
-import { ITodo } from '../@types/Todo';
-import { addNewTodo, getAllTodo } from '../service/todo';
+import { IdentificationTodo, ITodo } from '../@types/Todo';
+import { addNewTodo, deleteTodo, getAllTodo } from '../service/todo';
 
 interface TodoContextData {
   getTodo(): Promise<void>;
-  addTodo: any;
   todo: Array<ITodo>;
+  addTodo(params: IFormTodo): void;
   loading: boolean;
+  removeTodo(params: IdentificationTodo): Promise<void>;
 }
 
 interface Props {
@@ -36,13 +37,17 @@ export function TodoProvider({ children }: Props): ReactElement {
 
   async function addTodo(params: IFormTodo) {
     try {
-      // setLoading(true);
-      const { data } = await addNewTodo(params);
-      console.log(data);
+      await addNewTodo(params);
     } catch (error) {
       console.error(error);
-    } finally {
-      // setLoading(false);
+    }
+  }
+
+  async function removeTodo(params: IdentificationTodo) {
+    try {
+      await deleteTodo(params);
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -53,6 +58,7 @@ export function TodoProvider({ children }: Props): ReactElement {
         todo,
         loading,
         addTodo,
+        removeTodo,
       }}
     >
       {children}

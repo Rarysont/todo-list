@@ -1,15 +1,16 @@
 import { Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
 import { IFormTodo } from '../../@types/FormTodo';
+import { IdentificationTodo } from '../../@types/Todo';
 import { CardsTodo } from '../../Components/CardsTodo';
 import { Form } from '../../Components/Form';
 import { useTodo } from '../../hooks/todo';
 
 function Todo() {
   const [sucessAddTodo, setSuccessAddTodo] = useState(false);
-  const { getTodo, todo, loading, addTodo } = useTodo();
+  const { getTodo, todo, loading, addTodo, removeTodo } = useTodo();
 
   useEffect(() => {
     (async () => {
@@ -54,6 +55,14 @@ function Todo() {
     }
   };
 
+  async function onRemoveTodo(params: IdentificationTodo) {
+    try {
+      await removeTodo(params);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <Container
       display="flex"
@@ -75,7 +84,8 @@ function Todo() {
           </Center>
           <Container w="100%" marginTop="10" marginBottom="10" centerContent>
             {todo.length ? (
-              todo.map((to) => <CardsTodo id={to.id} title={to.title} loading={loading} />)
+              // eslint-disable-next-line react/jsx-no-bind
+              todo.map((to) => <CardsTodo id={to.id} title={to.title} loading={loading} onRemove={onRemoveTodo} />)
             ) : (
               <Text>Não há Todo</Text>
             )}

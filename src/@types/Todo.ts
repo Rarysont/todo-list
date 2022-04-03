@@ -3,3 +3,7 @@ export interface ITodo {
   title: string;
   done: boolean;
 }
+
+export interface IdentificationTodo {
+  id: string;
+}
