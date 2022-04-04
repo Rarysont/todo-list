@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
-import { Button, Container, Text } from '@chakra-ui/react';
+import { Button, Collapse, Container, Text } from '@chakra-ui/react';
 import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
@@ -67,7 +67,9 @@ function CollapseTodo(props: Props) {
           />
         ))
       ) : (
-        <Text>Não há Todo</Text>
+        <Collapse in={showTodo} style={{ width: '100%' }}>
+          <Text>Não há Todo</Text>
+        </Collapse>
       )}
     </Container>
   );

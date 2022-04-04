@@ -39,7 +39,7 @@ function Todo() {
     status,
   }: {
     title: string;
-    description: string;
+    description?: string;
     status: 'info' | 'warning' | 'success' | 'error' | undefined;
   }) => {
     return toast({
@@ -76,6 +76,7 @@ function Todo() {
     try {
       await removeTodo(params);
       setDeleteTodo(true);
+      customToast({ title: 'Tarefa deletada com sucesso', status: 'warning' });
     } catch (error) {
       console.error(error);
     } finally {
@@ -87,6 +88,7 @@ function Todo() {
     try {
       await updateTodo(params);
       setUpdateTodoDone(true);
+      customToast({ title: 'Tarefa concluída com sucesso', description: 'Parabéns!', status: 'success' });
     } catch (error) {
       console.error(error);
     } finally {
@@ -97,7 +99,6 @@ function Todo() {
   const handleUpdateTitleTodo: SubmitHandler<IdentificationTodo> = useCallback(
     async (form) => {
       try {
-        console.log(infoUpdateTodo);
         const payload = {
           id: infoUpdateTodo.id,
           done: infoUpdateTodo.done,
@@ -106,6 +107,7 @@ function Todo() {
         await updateTodoTitle(payload);
         setEditTodo('');
         setUpdateTitleTodo(true);
+        customToast({ title: 'Tarefa atualiza com sucesso', status: 'success' });
       } catch (error) {
         console.error(error);
       } finally {
