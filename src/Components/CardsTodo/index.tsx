@@ -1,6 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import { CheckCircleIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { Collapse, FormControl, IconButton, Input, InputGroup } from '@chakra-ui/react';
+import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { IFormTodo } from '../../@types/FormTodo';
@@ -18,10 +19,24 @@ interface Props {
   onUpdateTodoDone?(params: IdentificationTodo): Promise<void>;
   onEditTodo(id: string): void;
   editTodo: string;
+  onUpdateTitleTodo: SubmitHandler<IdentificationTodo>;
+  setInfoUpdateTodo: Dispatch<SetStateAction<{ id: string; done: boolean }>>;
 }
 
 export function CardsTodo(props: Props) {
-  const { id, title, loading, onRemove, isOpen, done, onUpdateTodoDone, onEditTodo, editTodo } = props;
+  const {
+    id,
+    title,
+    loading,
+    onRemove,
+    isOpen,
+    done,
+    onUpdateTodoDone,
+    onEditTodo,
+    editTodo,
+    onUpdateTitleTodo,
+    setInfoUpdateTodo,
+  } = props;
 
   const {
     handleSubmit,
@@ -29,17 +44,13 @@ export function CardsTodo(props: Props) {
     formState: { isSubmitting },
   } = useForm<IFormTodo>();
 
-  const onSubmit: SubmitHandler<IFormTodo> = async (form) => {
-    console.log(form);
-  };
-
   if (loading) {
     return <Loading />;
   }
 
   return (
     <Collapse key={id} in={isOpen} style={{ width: '100%' }}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onUpdateTitleTodo)}>
         <FormControl>
           <InputGroup>
             {editTodo === String(id) ? (
@@ -62,6 +73,7 @@ export function CardsTodo(props: Props) {
               <IconButton
                 aria-label="Search database"
                 children={<CheckCircleIcon />}
+                onClick={() => setInfoUpdateTodo({ id: String(id), done })}
                 isLoading={isSubmitting}
                 type="submit"
               />

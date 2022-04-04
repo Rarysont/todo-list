@@ -1,5 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { Button, Container, Text } from '@chakra-ui/react';
+import { Dispatch, SetStateAction } from 'react';
+import { SubmitHandler } from 'react-hook-form';
 
 import { ITodo, IdentificationTodo } from '../../@types/Todo';
 import { CardsTodo } from '../CardsTodo';
@@ -15,10 +17,25 @@ interface Props {
   // eslint-disable-next-line react/require-default-props
   onUpdateTodoDone?(params: IdentificationTodo): Promise<void>;
   editTodo: string;
+  onUpdateTitleTodo: SubmitHandler<IdentificationTodo>;
+  setInfoUpdateTodo: Dispatch<SetStateAction<{ id: string; done: boolean }>>;
 }
 
 function CollapseTodo(props: Props) {
-  const { onClick, showTodo, todo, onRemoveTodo, loading, done, onUpdateTodoDone, onEditTodo, editTodo } = props;
+  const {
+    onClick,
+    showTodo,
+    todo,
+    onRemoveTodo,
+    loading,
+    done,
+    onUpdateTodoDone,
+    onEditTodo,
+    editTodo,
+    onUpdateTitleTodo,
+    setInfoUpdateTodo,
+  } = props;
+
   return (
     <Container>
       <Container marginBottom="2" marginLeft="-30">
@@ -45,6 +62,8 @@ function CollapseTodo(props: Props) {
             onUpdateTodoDone={onUpdateTodoDone}
             onEditTodo={onEditTodo}
             editTodo={editTodo}
+            onUpdateTitleTodo={onUpdateTitleTodo}
+            setInfoUpdateTodo={setInfoUpdateTodo}
           />
         ))
       ) : (

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import { Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
 import { IFormTodo } from '../../@types/FormTodo';
@@ -10,11 +10,13 @@ import { Form } from '../../Components/Form';
 import { useTodo } from '../../hooks/todo';
 
 function Todo() {
-  const { getTodo, todoDone, todoNotDone, loading, addTodo, removeTodo, updateTodo } = useTodo();
+  const { getTodo, todoDone, todoNotDone, loading, addTodo, removeTodo, updateTodo, updateTodoTitle } = useTodo();
 
   const [sucessAddTodo, setSuccessAddTodo] = useState(false);
   const [deleteTodo, setDeleteTodo] = useState(false);
   const [updateTodoDone, setUpdateTodoDone] = useState(false);
+  const [updateTitleTodo, setUpdateTitleTodo] = useState(false);
+  const [infoUpdateTodo, setInfoUpdateTodo] = useState({ id: '', done: false });
   const [showTodoDone, setShowTodoDone] = useState(false);
   const [showTodoNotDone, setShowTodoNotDone] = useState(false);
   const [editTodo, setEditTodo] = useState('');
@@ -27,7 +29,7 @@ function Todo() {
     (async () => {
       await getTodo();
     })();
-  }, [sucessAddTodo, deleteTodo, updateTodoDone]);
+  }, [sucessAddTodo, deleteTodo, updateTodoDone, updateTitleTodo]);
 
   const toast = useToast();
 
@@ -92,6 +94,27 @@ function Todo() {
     }
   }
 
+  const handleUpdateTitleTodo: SubmitHandler<IdentificationTodo> = useCallback(
+    async (form) => {
+      try {
+        console.log(infoUpdateTodo);
+        const payload = {
+          id: infoUpdateTodo.id,
+          done: infoUpdateTodo.done,
+          title: form.title,
+        };
+        await updateTodoTitle(payload);
+        setEditTodo('');
+        setUpdateTitleTodo(true);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setUpdateTitleTodo(false);
+      }
+    },
+    [infoUpdateTodo],
+  );
+
   return (
     <Container
       display="flex"
@@ -128,6 +151,9 @@ function Todo() {
               done
               onEditTodo={handleEditTodo}
               editTodo={editTodo}
+              // eslint-disable-next-line react/jsx-no-bind
+              onUpdateTitleTodo={handleUpdateTitleTodo}
+              setInfoUpdateTodo={setInfoUpdateTodo}
             />
             <CollapseTodo
               onClick={handleToggleTodoNotDone}
@@ -141,6 +167,8 @@ function Todo() {
               onUpdateTodoDone={handleUpdateTodoDone}
               onEditTodo={handleEditTodo}
               editTodo={editTodo}
+              onUpdateTitleTodo={handleUpdateTitleTodo}
+              setInfoUpdateTodo={setInfoUpdateTodo}
             />
           </Container>
         </Flex>
