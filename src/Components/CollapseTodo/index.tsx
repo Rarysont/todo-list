@@ -11,12 +11,14 @@ interface Props {
   onRemoveTodo(params: IdentificationTodo): Promise<void>;
   loading: boolean;
   done: boolean;
+  onEditTodo(id: string): void;
   // eslint-disable-next-line react/require-default-props
   onUpdateTodoDone?(params: IdentificationTodo): Promise<void>;
+  editTodo: string;
 }
 
 function CollapseTodo(props: Props) {
-  const { onClick, showTodo, todo, onRemoveTodo, loading, done, onUpdateTodoDone } = props;
+  const { onClick, showTodo, todo, onRemoveTodo, loading, done, onUpdateTodoDone, onEditTodo, editTodo } = props;
   return (
     <Container>
       <Container marginBottom="2" marginLeft="-30">
@@ -41,6 +43,8 @@ function CollapseTodo(props: Props) {
             isOpen={showTodo}
             done={done}
             onUpdateTodoDone={onUpdateTodoDone}
+            onEditTodo={onEditTodo}
+            editTodo={editTodo}
           />
         ))
       ) : (

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import { Center, Container, Flex, Stack, Text, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
@@ -16,9 +17,11 @@ function Todo() {
   const [updateTodoDone, setUpdateTodoDone] = useState(false);
   const [showTodoDone, setShowTodoDone] = useState(false);
   const [showTodoNotDone, setShowTodoNotDone] = useState(false);
+  const [editTodo, setEditTodo] = useState('');
 
   const handleToggleTodoDone = () => setShowTodoDone(!showTodoDone);
   const handleToggleTodoNotDone = () => setShowTodoNotDone(!showTodoNotDone);
+  const handleEditTodo = (id: string) => setEditTodo(id);
 
   useEffect(() => {
     (async () => {
@@ -123,6 +126,8 @@ function Todo() {
               onRemoveTodo={onRemoveTodo}
               loading={loading}
               done
+              onEditTodo={handleEditTodo}
+              editTodo={editTodo}
             />
             <CollapseTodo
               onClick={handleToggleTodoNotDone}
@@ -134,6 +139,8 @@ function Todo() {
               done={false}
               // eslint-disable-next-line react/jsx-no-bind
               onUpdateTodoDone={handleUpdateTodoDone}
+              onEditTodo={handleEditTodo}
+              editTodo={editTodo}
             />
           </Container>
         </Flex>

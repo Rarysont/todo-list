@@ -10,3 +10,6 @@ export const deleteTodo = (params: IdentificationTodo) => api.delete(`task/${par
 
 export const updateTodoDone = (params: IdentificationTodo) =>
   api.put(`task/${params.id}`, { done: true, title: params.title }).then((res) => res);
+
+export const updateTitleTodo = (params: IdentificationTodo) =>
+  api.put(`task/${params.id}`, { done: params.done, title: params.title }).then((res) => res);

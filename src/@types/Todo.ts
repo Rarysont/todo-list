@@ -7,4 +7,5 @@ export interface ITodo {
 export interface IdentificationTodo {
   id: string;
   title?: string;
+  done?: boolean;
 }
